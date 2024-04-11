@@ -7,7 +7,7 @@ import NavbarComponent from './Components/Navbar';
 
 function App() {
   return (
-    <div>
+    <div className="h-100">
       <NavbarComponent></NavbarComponent>
       <BrowserRouter>
         <Routes>
