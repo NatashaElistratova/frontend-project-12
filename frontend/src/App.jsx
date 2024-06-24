@@ -1,15 +1,15 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 import React, { useState } from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, useLocation, Navigate } from 'react-router-dom';
 
-import MainPage from './Components/Pages/MainPage';
-import Login from './Components/Pages/Login';
-import NotFound from './Components/Pages/404';
-import NavbarComponent from './Components/Navbar';
+import MainPage from './components/Pages/MainPage';
+import Login from './components/Pages/Login';
+import NotFound from './components/Pages/404';
+import NavbarComponent from './components/NavbarComponent';
 
-import AuthContext from '../contexts/index.jsx';
-import useAuth from '../hooks/index.jsx';
+import AuthContext from './contexts/index.jsx';
+// import useAuth from './hooks/index.jsx';
 
 const AuthProvider = ({ children }) => {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -26,6 +26,15 @@ const AuthProvider = ({ children }) => {
     </AuthContext.Provider>
   );
 };
+
+// const PrivateRoute = ({ children }) => {
+//   const auth = useAuth();
+//   const location = useLocation();
+
+//   return (
+//     auth.loggedIn ? children : <Navigate to="/login" state={{ from: location }} />
+//   );
+// };
 
 function App() {
   return (
