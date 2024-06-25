@@ -4,8 +4,8 @@ import React, { useState } from 'react';
 import { BrowserRouter, Routes, Route, useLocation, Navigate } from 'react-router-dom';
 import routes from './routes.js';
 
-import MainPage from './Components/Pages/MainPage';
-import Login from './Components/Pages/Login';
+import MainPage from './Components/Pages/ChatPage.jsx';
+import Login from './Components/Pages/LoginPage.jsx';
 import NotFound from './Components/Pages/404';
 import NavbarComponent from './Components/NavbarComponent';
 
@@ -55,9 +55,7 @@ function App() {
           </Routes>
         </BrowserRouter>
       </AuthProvider>
-      
     </div>
-    
   );
 }
 
