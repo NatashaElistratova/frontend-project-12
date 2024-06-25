@@ -15,13 +15,13 @@ const LoginForm = () => {
 	const navigate = useNavigate();
 
 	const formik = useFormik({
-		initialValues: { login: "", password: "" },
+		initialValues: { username: "", password: "" },
 		onSubmit: async (values) => {
 			setAuthFailed(false);
 
 			try {
 				const res = await axios.post(routes.loginPath(), values);
-				localStorage.setItem("userId", JSON.stringify(res.data));
+				localStorage.setItem("user", JSON.stringify(res.data));
 				auth.logIn();
 				const { from } = location.state;
 				navigate(from);
@@ -44,12 +44,12 @@ const LoginForm = () => {
 			<Form onSubmit={formik.handleSubmit}>
 				<Form.Control
 					onChange={formik.handleChange}
-					value={formik.values.login}
+					value={formik.values.username}
 					required
 					type="text"
 					size="lg"
-					name="login"
-					id="login"
+					name="username"
+					id="username"
 					placeholder="Ваш ник"
 					className="mb-3"
 					isInvalid={authFailed}

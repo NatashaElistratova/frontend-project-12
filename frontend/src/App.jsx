@@ -2,21 +2,23 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 import React, { useState } from 'react';
 import { BrowserRouter, Routes, Route, useLocation, Navigate } from 'react-router-dom';
+import routes from './routes.js';
 
-import MainPage from './components/Pages/MainPage';
-import Login from './components/Pages/Login';
-import NotFound from './components/Pages/404';
-import NavbarComponent from './components/NavbarComponent';
+import MainPage from './Components/Pages/MainPage';
+import Login from './Components/Pages/Login';
+import NotFound from './Components/Pages/404';
+import NavbarComponent from './Components/NavbarComponent';
 
 import AuthContext from './contexts/index.jsx';
-// import useAuth from './hooks/index.jsx';
+import useAuth from './hooks/index.jsx';
 
 const AuthProvider = ({ children }) => {
-  const [loggedIn, setLoggedIn] = useState(false);
+  const userData = JSON.parse(localStorage.getItem('user'));
+  const [loggedIn, setLoggedIn] = useState(userData ? userData : null);
 
   const logIn = () => setLoggedIn(true);
   const logOut = () => {
-    localStorage.removeItem('userId');
+    localStorage.removeItem('user');
     setLoggedIn(false);
   };
 
@@ -27,14 +29,14 @@ const AuthProvider = ({ children }) => {
   );
 };
 
-// const PrivateRoute = ({ children }) => {
-//   const auth = useAuth();
-//   const location = useLocation();
+const PrivateRoute = ({ children }) => {
+  const auth = useAuth();
+  const location = useLocation();
 
-//   return (
-//     auth.loggedIn ? children : <Navigate to="/login" state={{ from: location }} />
-//   );
-// };
+  return (
+    auth.loggedIn ? children : <Navigate to={routes.loginPagePath()} state={{ from: location }} />
+  );
+};
 
 function App() {
   return (
@@ -43,8 +45,12 @@ function App() {
       <AuthProvider>
         <BrowserRouter>
           <Routes>
-            <Route path="/" element={<MainPage />} />
-            <Route path="/login" element={<Login />} />
+            <Route path={routes.chatPagePath()} element={
+              <PrivateRoute>
+                <MainPage />
+              </PrivateRoute>
+            } />
+            <Route path={routes.loginPagePath()} element={<Login />} />
             <Route path="/*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
