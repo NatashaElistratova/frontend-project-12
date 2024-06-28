@@ -2,7 +2,7 @@ import axios from 'axios';
 import React, { useEffect } from 'react';
 
 import { useSelector, useDispatch } from 'react-redux';
-import { setChannels } from '../../slices/channelSlice.js';
+import { setChannels, selectChannel } from '../../slices/channelSlice.js';
 
 import NewMessageForm from '../NewMessageForm.jsx';
 
@@ -20,6 +20,7 @@ const getAuthHeader = () => {
 
 function ChatPage() {
   const channels = useSelector((state) => state.channels.value);
+  const activeChatId = useSelector((state) => state.channels.activeChatId);
 
   const dispatch = useDispatch();
 
@@ -31,6 +32,10 @@ function ChatPage() {
 
     fetchChannels();
   }, []);
+
+  const onClickChannel = (channelId) => {
+    dispatch(selectChannel(channelId));
+  }
 
   return (
     <div className="container h-100 my-4 overflow-hidden rounded shadow">
@@ -45,7 +50,9 @@ function ChatPage() {
           <ul id="channels-box" className="nav flex-column nav-pills nav-fill px-2 mb-3 overflow-auto h-100 d-block">
             {channels.map(channel => {
               return (<li className="nav-item w-100" key={channel.id} >
-                        <button type="button" className="w-100 rounded-0 text-start btn btn-secondary">
+                        <button type="button" 
+                                className={`w-100 rounded-0 text-start btn ${channel.id === String(activeChatId) ? 'btn-secondary' : ''}`} 
+                                onClick={() => onClickChannel(channel.id)}>
                           <span className="me-1">#</span>{channel.name}
                         </button>
                       </li>)

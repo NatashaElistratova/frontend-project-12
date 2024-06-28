@@ -4,6 +4,9 @@ lint-frontend:
 install:
 	npm ci
 
+lint: 
+	npm run lint
+
 start-frontend:
 	cd frontend
 	npm run start
