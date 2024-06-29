@@ -3,6 +3,7 @@ import { createSlice } from '@reduxjs/toolkit';
 const initialState = {
   value: [],
   activeChatId: 1,
+  messages: [],
 };
 
 const channelSlice = createSlice({
@@ -15,10 +16,13 @@ const channelSlice = createSlice({
       selectChannel: (state, action) => {
         console.log(action.payload);
         state.activeChatId = action.payload;
-      }
+      },
+      setMessages: (state, action) => {
+        state.messages = [...state.messages, ...action.payload];
+      },
     },
 });
 
-export const { setChannels, selectChannel } = channelSlice.actions;
+export const { setChannels, selectChannel, setMessages } = channelSlice.actions;
 
 export default channelSlice.reducer;

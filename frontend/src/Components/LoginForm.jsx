@@ -24,7 +24,8 @@ const LoginForm = () => {
 				localStorage.setItem("user", JSON.stringify(res.data));
 				auth.logIn();
 				const { from } = location.state;
-				navigate(from);
+				const navigatePath = from || routes.loginPagePath();
+				navigate(navigatePath);
 			} catch (err) {
 				formik.setSubmitting(false);
 
