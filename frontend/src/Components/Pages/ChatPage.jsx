@@ -14,10 +14,13 @@ import NewMessageForm from "../NewMessageForm.jsx";
 
 import routes from "../../routes.js";
 
+import { PlusSquare } from "react-bootstrap-icons";
+
 function ChatPage() {
     const channels = useSelector((state) => state.channels.value);
     const messages = useSelector((state) => state.channels.messages);
-    const activeChatId = useSelector((state) => state.channels.activeChatId);
+    const activeChannel = useSelector((state) => state.channels.activeChannel);
+    const filteredMessages = messages.filter(message => message.channelId === activeChannel.id);
     const navigate = useNavigate();
 
     const dispatch = useDispatch();
@@ -65,9 +68,8 @@ function ChatPage() {
         });
     };
 
-    const onClickChannel = (channelId) => {
-        dispatch(selectChannel(channelId));
-        fetchMessages();
+    const onClickChannel = (channel) => {
+        dispatch(selectChannel(channel));
     };
 
     return (
@@ -80,6 +82,7 @@ function ChatPage() {
                             type="button"
                             className="p-0 text-primary btn btn-group-vertical"
                         >
+                            <PlusSquare size={20} />
                             <span className="visually-hidden">+</span>
                         </button>
                     </div>
@@ -93,12 +96,12 @@ function ChatPage() {
                                     <button
                                         type="button"
                                         className={`w-100 rounded-0 text-start btn ${
-                                            channel.id === String(activeChatId)
+                                            channel.id === activeChannel.id
                                                 ? "btn-secondary"
                                                 : ""
                                         }`}
                                         onClick={() =>
-                                            onClickChannel(channel.id)
+                                            onClickChannel(channel)
                                         }
                                     >
                                         <span className="me-1">#</span>
@@ -113,17 +116,17 @@ function ChatPage() {
                     <div className="d-flex flex-column h-100">
                         <div className="bg-light mb-4 p-3 shadow-sm small">
                             <p className="m-0">
-                                <b># general</b>
+                                <b># {activeChannel.name}</b>
                             </p>
                             <span className="text-muted">
-                                {messages.length} сообщений
+                                {filteredMessages.length} сообщений
                             </span>
                         </div>
                         <div
                             id="messages-box"
                             className="chat-messages overflow-auto px-5"
                         >
-                            {messages.map((message) => {
+                            {filteredMessages.map((message) => {
                                 return (
                                     <div key={message.id} className="text-break mb-2">
                                         <b>{message.username}</b>: {message.body}

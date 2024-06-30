@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   value: [],
-  activeChatId: 1,
+  activeChannel: { id: "1", name: "general" },
   messages: [],
 };
 
@@ -14,8 +14,7 @@ const channelSlice = createSlice({
         state.value = [...state.value, ...action.payload];
       },
       selectChannel: (state, action) => {
-        console.log(action.payload);
-        state.activeChatId = action.payload;
+        state.activeChannel = action.payload;
       },
       setMessages: (state, action) => {
         state.messages = [...state.messages, ...action.payload];

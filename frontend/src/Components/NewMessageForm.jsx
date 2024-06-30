@@ -9,13 +9,13 @@ import { useSelector } from "react-redux";
 import { useEffect, useRef } from "react";
 
 const NewMessageForm = () => {
-	const activeChatId = useSelector((state) => state.channels.activeChatId);
+	const activeChannel = useSelector((state) => state.channels.activeChannel);
 	const userdata = JSON.parse(localStorage.getItem("user"));
 	const inputRef = useRef();
 
 	useEffect(() => {
-    inputRef.current.focus();
-  }, []);
+		inputRef.current.focus();
+	}, [activeChannel.id]);
 
 	const formik = useFormik({
 		initialValues: { message: "" },
@@ -31,7 +31,7 @@ const NewMessageForm = () => {
 
 			const messageData = {
 				body: message,
-				channelId: activeChatId,
+				channelId: activeChannel.id,
 				username: userdata.username,
 			};
 
