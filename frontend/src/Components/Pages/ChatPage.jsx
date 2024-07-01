@@ -4,13 +4,11 @@ import React, { useEffect } from "react";
 
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import {
-    setChannels,
-    selectChannel,
-    setMessages,
-} from "../../slices/channelSlice.js";
+import { setChannels,setMessages, selectChannel } from "../../slices/channelSlice.js";
+import { openModal } from '../../slices/modalSlice.js';
 
 import NewMessageForm from "../NewMessageForm.jsx";
+import NewChannelModal from "../NewChannelModal.jsx";
 
 import routes from "../../routes.js";
 
@@ -72,6 +70,11 @@ function ChatPage() {
         dispatch(selectChannel(channel));
     };
 
+    const addChannel = () => {
+        dispatch(openModal());
+    };
+
+
     return (
         <div className="container h-100 my-4 overflow-hidden rounded shadow">
             <div className="row h-100 bg-white flex-md-row">
@@ -81,6 +84,7 @@ function ChatPage() {
                         <button
                             type="button"
                             className="p-0 text-primary btn btn-group-vertical"
+                            onClick={addChannel}
                         >
                             <PlusSquare size={20} />
                             <span className="visually-hidden">+</span>
@@ -140,6 +144,8 @@ function ChatPage() {
                     </div>
                 </div>
             </div>
+
+            <NewChannelModal/>
         </div>
     );
 }
