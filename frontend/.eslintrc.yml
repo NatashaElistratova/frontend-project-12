@@ -1,7 +1,3 @@
----
-
-parser: "@babel/eslint-parser"
-
 env:
   browser: true
   es2021: true
@@ -26,6 +22,8 @@ rules:
   import/extensions: 0
   import/no-unresolved: 0
   react/prop-types: 0
+  react-hooks/exhaustive-deps: 0
+  react/jsx-no-constructed-context-values: 0
   no-console: 0
   react/react-in-jsx-scope: 0
   functional/no-conditional-statement: 0
@@ -34,6 +32,8 @@ rules:
   functional/functional-parameters: 0
   functional/no-try-statement: 0
   functional/no-throw-statement: 0
+  functional/no-return-void: 0
+  no-param-reassign: 0
   no-underscore-dangle: [2, { "allow": ["__filename", "__dirname"] }]
   react/function-component-definition: [2, { "namedComponents": "arrow-function" }]
   testing-library/no-debug: 0
