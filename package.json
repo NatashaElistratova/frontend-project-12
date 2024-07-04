@@ -12,7 +12,6 @@
   "author": "Natasha Elistratova",
   "license": "ISC",
   "dependencies": {
-    "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "@hexlet/chat-server": "^2.0.3"
   },
   "devDependencies": {
