@@ -13,7 +13,7 @@ import routes from './routes.js';
 import MainPage from './components/pages/ChatPage.jsx';
 import Login from './components/pages/LoginPage.jsx';
 import NotFound from './components/pages/404.jsx';
-import NavbarComponent from './components/NavbarComponent';
+import NavbarComponent from './components/NavbarComponent.jsx';
 
 import AuthContext from './contexts/index.jsx';
 import useAuth from './hooks/index.jsx';
