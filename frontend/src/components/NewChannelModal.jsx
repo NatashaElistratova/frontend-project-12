@@ -1,4 +1,5 @@
 import axios from 'axios';
+import * as yup from 'yup';
 import { useFormik } from 'formik';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -6,41 +7,58 @@ import {
 } from 'react-bootstrap';
 import routes from '../routes.js';
 import { closeModal } from '../slices/modalSlice.js';
+import locale from '../locales/locale.js';
+import { setChannels, selectChannel } from '../slices/channelSlice.js';
+import useAuth from '../hooks/index.jsx';
 
 const NewChannelModal = () => {
+  const auth = useAuth();
   const dispatch = useDispatch();
   const isOpened = useSelector((state) => state.modal.isOpened);
+  const channels = useSelector((state) => state.channels.value);
+  const channelNames = channels.map((i) => i.name);
 
-  const handleClose = () => {
-    dispatch(closeModal());
-  };
+  yup.setLocale(locale);
 
-  const userdata = JSON.parse(localStorage.getItem('user'));
+  const getValidationSchema = (names) => yup.object().shape({
+    name: yup.string()
+      .min(3, 'Too Short!')
+      .max(20, 'Too Long!')
+      .required('Required')
+      .notOneOf(names, 'Already exists!'),
+  });
 
   const formik = useFormik({
     initialValues: { name: '' },
     validateOnBlur: false,
-    onSubmit: async ({ name }) => {
-      const getAuthHeader = () => {
-        if (userdata && userdata.token) {
-          return { Authorization: `Bearer ${userdata.token}` };
-        }
-
-        return {};
-      };
-
+    validationSchema: getValidationSchema(channelNames),
+    onSubmit: async ({ name, resetForm, setSubmitting }) => {
       const channelData = { name };
 
-      await axios.post(
-        routes.channelsPath(),
-        channelData,
-        { headers: getAuthHeader() },
-      ).then(() => {
-        formik.setSubmitting(false);
-        handleClose();
-      });
+      try {
+        const response = await axios.post(
+          routes.channelsPath(),
+          channelData,
+          { headers: auth.getAuthHeader() },
+        );
+
+        dispatch(setChannels([response.data]));
+        dispatch(selectChannel(response.data));
+        dispatch(closeModal());
+        setSubmitting(false);
+        resetForm();
+      } catch (error) {
+        formik.errors = error.data;
+      }
     },
   });
+
+  const handleClose = () => {
+    dispatch(closeModal());
+    formik.setSubmitting(false);
+    formik.resetForm();
+  };
+
   const isInvalid = !formik.dirty || !formik.isValid;
 
   return (
@@ -66,14 +84,16 @@ const NewChannelModal = () => {
               <Form.Control
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
-                value={formik.values.message}
+                value={formik.values.name}
                 type="text"
                 name="name"
-                required
                 disabled={formik.isSubmitting}
+                isInvalid={isInvalid}
                 className="border rounded-2 py-1 mb-2"
               />
-              <Form.Control.Feedback type="invalid" />
+              <Form.Control.Feedback type="invalid">
+                {formik.errors.name}
+              </Form.Control.Feedback>
             </InputGroup>
             <div className="d-flex justify-content-end">
               <Button

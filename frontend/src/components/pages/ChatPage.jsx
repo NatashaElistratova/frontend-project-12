@@ -5,6 +5,7 @@ import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { PlusSquare } from 'react-bootstrap-icons';
+import useAuth from '../../hooks/index.jsx';
 import { setChannels, setMessages, selectChannel } from '../../slices/channelSlice.js';
 import { openModal } from '../../slices/modalSlice.js';
 
@@ -14,6 +15,7 @@ import NewChannelModal from '../NewChannelModal.jsx';
 import routes from '../../routes.js';
 
 const ChatPage = () => {
+  const auth = useAuth();
   const channels = useSelector((state) => state.channels.value);
   const messages = useSelector((state) => state.channels.messages);
   const activeChannel = useSelector((state) => state.channels.activeChannel);
@@ -21,16 +23,6 @@ const ChatPage = () => {
   const navigate = useNavigate();
 
   const dispatch = useDispatch();
-
-  const getAuthHeader = () => {
-    const userdata = JSON.parse(localStorage.getItem('user'));
-
-    if (userdata && userdata.token) {
-      return { Authorization: `Bearer ${userdata.token}` };
-    }
-
-    return {};
-  };
 
   const fetchNewMessages = async () => {
     const socket = io();
@@ -42,7 +34,7 @@ const ChatPage = () => {
 
   const fetchMessages = async () => {
     const { data } = await axios.get(routes.messagesPath(), {
-      headers: getAuthHeader(),
+      headers: auth.getAuthHeader(),
     });
     dispatch(setMessages(data));
     fetchNewMessages();
@@ -51,7 +43,7 @@ const ChatPage = () => {
   useEffect(() => {
     const fetchChannels = async () => {
       const { data } = await axios
-        .get(routes.channelsPath(), { headers: getAuthHeader() })
+        .get(routes.channelsPath(), { headers: auth.getAuthHeader() })
         .catch((e) => {
           if (e.isAxiosError && e.response.status === 401) {
             navigate(routes.loginPagePath());

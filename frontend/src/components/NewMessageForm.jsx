@@ -7,8 +7,10 @@ import { ArrowRightSquare } from 'react-bootstrap-icons';
 import { useSelector } from 'react-redux';
 import { useEffect, useRef } from 'react';
 import routes from '../routes.js';
+import useAuth from '../hooks/index.jsx';
 
 const NewMessageForm = () => {
+  const auth = useAuth();
   const activeChannel = useSelector((state) => state.channels.activeChannel);
   const userdata = JSON.parse(localStorage.getItem('user'));
   const inputRef = useRef();
@@ -21,14 +23,6 @@ const NewMessageForm = () => {
     initialValues: { message: '' },
     validateOnBlur: false,
     onSubmit: async ({ message }) => {
-      const getAuthHeader = () => {
-        if (userdata && userdata.token) {
-          return { Authorization: `Bearer ${userdata.token}` };
-        }
-
-        return {};
-      };
-
       const messageData = {
         body: message,
         channelId: activeChannel.id,
@@ -38,7 +32,7 @@ const NewMessageForm = () => {
       await axios.post(
         routes.messagesPath(),
         messageData,
-        { headers: getAuthHeader() },
+        { headers: auth.getAuthHeader() },
       ).then(() => {
         formik.resetForm();
         formik.setSubmitting(false);

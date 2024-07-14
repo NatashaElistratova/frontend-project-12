@@ -28,8 +28,19 @@ const AuthProvider = ({ children }) => {
     setLoggedIn(false);
   };
 
+  const getAuthHeader = () => {
+    if (userData && userData.token) {
+      return { Authorization: `Bearer ${userData.token}` };
+    }
+
+    return {};
+  };
+
   return (
-    <AuthContext.Provider value={{ loggedIn, logIn, logOut }}>
+    <AuthContext.Provider value={{
+      loggedIn, logIn, logOut, getAuthHeader,
+    }}
+    >
       {children}
     </AuthContext.Provider>
   );
@@ -47,7 +58,7 @@ const PrivateRoute = ({ children }) => {
 };
 
 const App = () => (
-  <div className="h-100">
+  <div className="d-flex flex-column h-100">
     <NavbarComponent />
     <AuthProvider>
       <BrowserRouter>
