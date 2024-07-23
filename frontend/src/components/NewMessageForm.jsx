@@ -67,7 +67,6 @@ const NewMessageForm = () => {
           disabled={isInvalid}
         >
           <ArrowRightSquare size={20} />
-          {/* <span className="visually-hidden">{t('chat.send')}</span> */}
         </Button>
       </InputGroup>
     </Form>

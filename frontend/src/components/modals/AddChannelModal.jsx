@@ -5,13 +5,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import {
   Form, InputGroup, Modal, Button,
 } from 'react-bootstrap';
-import routes from '../routes.js';
-import { closeModal } from '../slices/modalSlice.js';
-import locale from '../locales/locale.js';
-import { setChannels, selectChannel } from '../slices/channelSlice.js';
-import useAuth from '../hooks/index.jsx';
+import routes from '../../routes.js';
+import { closeModal } from '../../slices/modalSlice.js';
+import locale from '../../locales/locale.js';
+import { setChannels, selectChannel } from '../../slices/channelSlice.js';
+import useAuth from '../../hooks/index.jsx';
 
-const NewChannelModal = () => {
+const AddChannelModal = () => {
   const auth = useAuth();
   const dispatch = useDispatch();
   const isOpened = useSelector((state) => state.modal.isOpened);
@@ -119,4 +119,4 @@ const NewChannelModal = () => {
   );
 };
 
-export default NewChannelModal;
+export default AddChannelModal;

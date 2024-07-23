@@ -10,7 +10,7 @@ import { setChannels, setMessages, selectChannel } from '../../slices/channelSli
 import { openModal } from '../../slices/modalSlice.js';
 
 import NewMessageForm from '../NewMessageForm.jsx';
-import NewChannelModal from '../NewChannelModal.jsx';
+import AddChannelModal from '../AddChannelModal.jsx';
 
 import routes from '../../routes.js';
 
@@ -136,7 +136,7 @@ const ChatPage = () => {
         </div>
       </div>
 
-      <NewChannelModal />
+      <AddChannelModal />
     </div>
   );
 };
