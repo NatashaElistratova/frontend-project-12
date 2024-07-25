@@ -11,7 +11,7 @@ import locale from '../../locales/locale.js';
 import { setChannels, selectChannel } from '../../slices/channelSlice.js';
 import useAuth from '../../hooks/index.jsx';
 
-const AddChannelModal = () => {
+const Add = () => {
   const auth = useAuth();
   const dispatch = useDispatch();
   const isOpened = useSelector((state) => state.modal.isOpened);
@@ -119,4 +119,4 @@ const AddChannelModal = () => {
   );
 };
 
-export default AddChannelModal;
+export default Add;
