@@ -1,9 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-  value: [],
+  channels: [],
+  defaultChannel: { id: '1', name: 'general' },
   activeChannel: { id: '1', name: 'general' },
-  messages: [],
 };
 
 const channelSlice = createSlice({
@@ -11,17 +11,17 @@ const channelSlice = createSlice({
   initialState,
   reducers: {
     setChannels: (state, action) => {
-      state.value = [...state.value, ...action.payload];
+      state.channels = [...state.channels, ...action.payload];
     },
     removeChannel: (state, action) => {
-      const filteredChannels = state.value.filter((channel) => channel.id !== action.payload);
-      state.value = filteredChannels;
+      const filteredChannels = state.channels.filter((channel) => channel.id !== action.payload);
+      state.channels = filteredChannels;
     },
     updateChannel: (state, action) => {
-      const updatedValue = state.value
+      const updatedValue = state.channels
         .map((i) => (i.id === action.payload.id ? action.payload : i));
 
-      state.value = updatedValue;
+      state.channels = updatedValue;
     },
     selectChannel: (state, action) => {
       state.activeChannel = action.payload;

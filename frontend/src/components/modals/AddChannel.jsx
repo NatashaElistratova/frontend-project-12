@@ -19,7 +19,7 @@ const AddChannelModal = () => {
   const inputRef = useRef();
 
   const isOpened = useSelector((state) => state.modal.isOpened);
-  const channels = useSelector((state) => state.channels.value);
+  const channels = useSelector((state) => state.channels.channels);
   const channelNames = channels.map((i) => i.name);
 
   useEffect(() => {

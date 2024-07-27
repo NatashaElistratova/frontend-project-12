@@ -15,9 +15,9 @@ import routes from '../../routes.js';
 
 const ChatPage = () => {
   const auth = useAuth();
-  const channels = useSelector((state) => state.channels.value);
+  const channels = useSelector((state) => state.channels.channels);
   const activeChannel = useSelector((state) => state.channels.activeChannel);
-  const messages = useSelector((state) => state.channels.messages);
+  const messages = useSelector((state) => state.messages.messages);
   const filteredMessages = messages.filter((message) => message.channelId === activeChannel.id);
   const navigate = useNavigate();
 

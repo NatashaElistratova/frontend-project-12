@@ -16,7 +16,7 @@ const RenameChannelModal = (props) => {
   const auth = useAuth();
   const dispatch = useDispatch();
   const isOpened = useSelector((state) => state.modal.isOpened);
-  const channels = useSelector((state) => state.channels.value);
+  const channels = useSelector((state) => state.channels.channels);
   const inputRef = useRef();
 
   const { data } = props;

@@ -13,6 +13,7 @@ const RemoveChannelModal = (props) => {
   const auth = useAuth();
   const dispatch = useDispatch();
   const isOpened = useSelector((state) => state.modal.isOpened);
+  const defaultChannel = useSelector((state) => state.channels.defaultChannel);
   const { data } = props;
   const handleClose = () => {
     dispatch(closeModal());
@@ -25,7 +26,7 @@ const RemoveChannelModal = (props) => {
         { headers: auth.getAuthHeader() },
       );
       dispatch(removeChannel(response.data.id));
-      dispatch(selectChannel({ id: '1', name: 'general' }));
+      dispatch(selectChannel(defaultChannel));
       dispatch(closeModal());
     } catch (error) {
       console.error(error);
