@@ -10,7 +10,6 @@ import useAuth from '../../hooks/index.jsx';
 import routes from '../../routes.js';
 import { closeModal } from '../../slices/modalSlice.js';
 import { setChannels, selectChannel } from '../../slices/channelSlice.js';
-
 import locale from '../../locales/locale.js';
 
 const AddChannelModal = () => {

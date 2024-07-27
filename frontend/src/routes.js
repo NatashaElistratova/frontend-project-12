@@ -6,6 +6,7 @@ const routes = {
   messagesPath: () => [apiPath, 'messages'].join('/'),
   chatPagePath: () => '/',
   loginPagePath: () => '/login',
+  signupPagePath: () => '/signup',
 
 };
 
