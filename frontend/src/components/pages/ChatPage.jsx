@@ -5,7 +5,8 @@ import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import useAuth from '../../hooks/index.jsx';
-import { setChannels, setMessages } from '../../slices/channelSlice.js';
+import { setChannels } from '../../slices/channelSlice.js';
+import { setMessages } from '../../slices/messageSlice.js';
 
 import ChannelList from '../ChannelList.jsx';
 import NewMessageForm from '../NewMessageForm.jsx';
