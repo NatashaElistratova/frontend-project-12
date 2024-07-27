@@ -1,22 +1,30 @@
 import axios from 'axios';
 import * as yup from 'yup';
+import { useEffect, useRef } from 'react';
 import { useFormik } from 'formik';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   Form, InputGroup, Modal, Button,
 } from 'react-bootstrap';
+import useAuth from '../../hooks/index.jsx';
 import routes from '../../routes.js';
 import { closeModal } from '../../slices/modalSlice.js';
-import locale from '../../locales/locale.js';
 import { setChannels, selectChannel } from '../../slices/channelSlice.js';
-import useAuth from '../../hooks/index.jsx';
 
-const Add = () => {
+import locale from '../../locales/locale.js';
+
+const AddChannelModal = () => {
   const auth = useAuth();
   const dispatch = useDispatch();
+  const inputRef = useRef();
+
   const isOpened = useSelector((state) => state.modal.isOpened);
   const channels = useSelector((state) => state.channels.value);
   const channelNames = channels.map((i) => i.name);
+
+  useEffect(() => {
+    inputRef.current.focus();
+  }, []);
 
   yup.setLocale(locale);
 
@@ -59,7 +67,7 @@ const Add = () => {
     formik.resetForm();
   };
 
-  const isInvalid = !formik.dirty || !formik.isValid;
+  const isInvalid = !formik.isValid;
 
   return (
     <Modal show={isOpened} onHide={handleClose}>
@@ -87,6 +95,7 @@ const Add = () => {
                 value={formik.values.name}
                 type="text"
                 name="name"
+                ref={inputRef}
                 disabled={formik.isSubmitting}
                 isInvalid={isInvalid}
                 className="border rounded-2 py-1 mb-2"
@@ -119,4 +128,4 @@ const Add = () => {
   );
 };
 
-export default Add;
+export default AddChannelModal;

@@ -1,6 +1,6 @@
-import Add from './Add.jsx';
-import Remove from './Remove.jsx';
-import Rename from './Rename.jsx';
+import Add from './AddChannel.jsx';
+import Remove from './RemoveChannel.jsx';
+import Rename from './RenameChannel.jsx';
 
 const modals = {
   adding: Add,
@@ -8,4 +8,4 @@ const modals = {
   renaming: Rename,
 };
 
-export default (modalName) => modals[modalName];
+export default (modalData) => modals[modalData.type];
