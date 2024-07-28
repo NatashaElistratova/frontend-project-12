@@ -1,5 +1,5 @@
 import axios from 'axios';
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { useFormik } from 'formik';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
@@ -13,6 +13,10 @@ const LoginForm = () => {
   const inputRef = useRef();
   const location = useLocation();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    inputRef.current.focus();
+  }, []);
 
   const formik = useFormik({
     initialValues: { username: '', password: '' },
@@ -53,6 +57,7 @@ const LoginForm = () => {
           id="username"
           placeholder="Ваш ник"
           className="mb-3"
+          ref={inputRef}
           isInvalid={authFailed}
         />
         <Form.Control

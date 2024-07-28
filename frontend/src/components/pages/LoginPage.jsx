@@ -1,4 +1,5 @@
 import Card from 'react-bootstrap/Card';
+import { Link } from 'react-router-dom';
 import LoginForm from '../LoginForm';
 
 const Login = () => (
@@ -9,6 +10,14 @@ const Login = () => (
           <Card.Body>
             <LoginForm />
           </Card.Body>
+
+          <div className="card-footer p-4">
+            <div className="text-center">
+              <span>Нет аккаунта? </span>
+              <Link to="/signup">Регистрация</Link>
+            </div>
+          </div>
+
         </Card>
       </div>
     </div>

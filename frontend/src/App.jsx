@@ -60,8 +60,8 @@ const PrivateRoute = ({ children }) => {
 
 const App = () => (
   <div className="d-flex flex-column h-100">
-    <NavbarComponent />
     <AuthProvider>
+      <NavbarComponent />
       <BrowserRouter>
         <Routes>
           <Route
