@@ -1,7 +1,7 @@
 export default {
   translation: {
-    languages: {
-      ru: 'Русский',
+    titles: {
+      channels: 'Каналы',
     },
     errors: {
       validation: {

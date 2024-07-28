@@ -3,6 +3,7 @@ import { PlusSquare } from 'react-bootstrap-icons';
 import { Button, Dropdown, ButtonGroup } from 'react-bootstrap';
 
 import { useDispatch } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 import { openModal } from '../slices/modalSlice.js';
 import { selectChannel } from '../slices/channelSlice.js';
 
@@ -12,6 +13,7 @@ const ChannelList = ({ channels, activeChannel }) => {
   const [modalData, setModalData] = useState({ type: null, data: null });
   const showModal = (type, data) => setModalData({ type, data });
   const dispatch = useDispatch();
+  const { t } = useTranslation();
 
   const renderModal = ({ type, data }) => {
     if (!type) {
@@ -44,7 +46,7 @@ const ChannelList = ({ channels, activeChannel }) => {
   return (
     <div>
       <div className="d-flex mt-1 justify-content-between mb-2 ps-4 pe-2 p-4">
-        <b>Каналы</b>
+        <b>{t('titles.channels')}</b>
         <Button
           type="button"
           variant="group-vertical"
