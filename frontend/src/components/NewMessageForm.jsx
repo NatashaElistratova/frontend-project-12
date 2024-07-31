@@ -6,6 +6,7 @@ import InputGroup from 'react-bootstrap/InputGroup';
 import { ArrowRightSquare } from 'react-bootstrap-icons';
 import { useSelector } from 'react-redux';
 import { useEffect, useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 import routes from '../routes.js';
 import useAuth from '../hooks/index.jsx';
 
@@ -14,6 +15,7 @@ const NewMessageForm = () => {
   const activeChannel = useSelector((state) => state.channels.activeChannel);
   const userdata = JSON.parse(localStorage.getItem('user'));
   const inputRef = useRef();
+  const { t } = useTranslation();
 
   useEffect(() => {
     inputRef.current.focus();
@@ -58,7 +60,7 @@ const NewMessageForm = () => {
           ref={inputRef}
           required
           disabled={formik.isSubmitting}
-          placeholder="Введите сообщение..."
+          placeholder={t('placeholders.typeMessage')}
           className="border-0 p-0 ps-2"
         />
         <Button

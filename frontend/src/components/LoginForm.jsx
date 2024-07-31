@@ -4,6 +4,7 @@ import { useFormik } from 'formik';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import useAuth from '../hooks/index.jsx';
 import routes from '../routes.js';
 
@@ -13,6 +14,7 @@ const LoginForm = () => {
   const inputRef = useRef();
   const location = useLocation();
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   useEffect(() => {
     inputRef.current.focus();
@@ -44,7 +46,7 @@ const LoginForm = () => {
   });
   return (
     <div>
-      <h1 className="row justify-content-center">Войти</h1>
+      <h1 className="row justify-content-center">{t('actions.login')}</h1>
 
       <Form onSubmit={formik.handleSubmit}>
         <Form.Control
@@ -55,7 +57,7 @@ const LoginForm = () => {
           size="lg"
           name="username"
           id="username"
-          placeholder="Ваш ник"
+          placeholder={t('placeholders.nickName')}
           className="mb-3"
           ref={inputRef}
           isInvalid={authFailed}
@@ -68,19 +70,19 @@ const LoginForm = () => {
           size="lg"
           name="password"
           id="password"
-          placeholder="Пароль"
+          placeholder={t('placeholders.password')}
           className="mb-3"
           isInvalid={authFailed}
         />
         <Form.Control.Feedback type="invalid">
-          Неверные имя пользователя или пароль
+          {t('errors.usernameOrPassword')}
         </Form.Control.Feedback>
         <Button
           variant="outline-primary"
           className="w-100"
           type="submit"
         >
-          Войти
+          {t('actions.login')}
         </Button>
       </Form>
     </div>

@@ -5,6 +5,7 @@ import { useFormik } from 'formik';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import useAuth from '../hooks/index.jsx';
 import routes from '../routes.js';
 import locale from '../locales/locale.js';
@@ -14,6 +15,7 @@ const SignupForm = () => {
   const [signupFailed, setSignupFailed] = useState(false);
   const inputRef = useRef();
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   yup.setLocale(locale);
 
@@ -23,16 +25,16 @@ const SignupForm = () => {
 
   const validationSchema = yup.object().shape({
     username: yup.string()
-      .min(3, 'Too Short!')
-      .max(20, 'Too Long!')
-      .required('Required'),
+      .min(3, t('errors.validation.min3'))
+      .max(20, t('errors.validation.max20'))
+      .required(t('errors.validation.required')),
     password: yup.string()
-      .min(6, 'Too Short!')
-      .required('Required'),
+      .min(6, t('errors.validation.min6'))
+      .required(t('errors.validation.required')),
     confirmPassword: yup.string()
-      .min(6, 'Too Short!')
-      .required('Required')
-      .oneOf([yup.ref('password')], 'Your passwords do not match.'),
+      .min(6, t('errors.validation.min6'))
+      .required(t('errors.validation.required'))
+      .oneOf([yup.ref('password')], t('errorrs.validation.passwordsNotMach')),
   });
 
   const formik = useFormik({
@@ -63,7 +65,7 @@ const SignupForm = () => {
 
   return (
     <div>
-      <h1 className="row justify-content-center">Регистрация</h1>
+      <h1 className="row justify-content-center">{t('titles.signup')}</h1>
 
       <Form onSubmit={formik.handleSubmit} noValidate>
         <Form.Group className="form-floating mb-3">
@@ -76,9 +78,9 @@ const SignupForm = () => {
             ref={inputRef}
             isInvalid={formik.errors.username || signupFailed}
           />
-          <Form.Label htmlFor="username">Имя пользователя</Form.Label>
+          <Form.Label htmlFor="username">{t('placeholders.userName')}</Form.Label>
           <Form.Control.Feedback type="invalid" tooltip>
-            {signupFailed ? 'Пользователь с таким логином уже существует' : formik.errors.username }
+            {signupFailed ? t('errors.loginExists') : formik.errors.username }
           </Form.Control.Feedback>
         </Form.Group>
 
@@ -91,7 +93,7 @@ const SignupForm = () => {
             id="password"
             isInvalid={formik.errors.password || signupFailed}
           />
-          <Form.Label htmlFor="username">Пароль</Form.Label>
+          <Form.Label htmlFor="username">{t('placeholders.password')}</Form.Label>
           <Form.Control.Feedback type="invalid" tooltip placement="right">
             {formik.errors.password}
           </Form.Control.Feedback>
@@ -106,7 +108,7 @@ const SignupForm = () => {
             id="confirmPassword"
             isInvalid={formik.errors.confirmPassword || signupFailed}
           />
-          <Form.Label htmlFor="username">Подтвердите пароль</Form.Label>
+          <Form.Label htmlFor="username">{t('placeholders.repeatPassword')}</Form.Label>
           <Form.Control.Feedback type="invalid" tooltip placement="right">
             {formik.errors.confirmPassword}
           </Form.Control.Feedback>
@@ -117,7 +119,7 @@ const SignupForm = () => {
           className="w-100"
           type="submit"
         >
-          Зарегистрироваться
+          {t('actions.signin')}
         </Button>
       </Form>
     </div>

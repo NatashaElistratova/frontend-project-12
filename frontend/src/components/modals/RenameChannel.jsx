@@ -6,8 +6,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import {
   Form, InputGroup, Modal, Button,
 } from 'react-bootstrap';
+import { useTranslation } from 'react-i18next';
 import routes from '../../routes.js';
-import locale from '../../locales/locale.js';
 import { closeModal } from '../../slices/modalSlice.js';
 import { updateChannel } from '../../slices/channelSlice.js';
 import useAuth from '../../hooks/index.jsx';
@@ -18,6 +18,7 @@ const RenameChannelModal = (props) => {
   const isOpened = useSelector((state) => state.modal.isOpened);
   const channels = useSelector((state) => state.channels.channels);
   const inputRef = useRef();
+  const { t } = useTranslation();
 
   const { data } = props;
 
@@ -28,14 +29,12 @@ const RenameChannelModal = (props) => {
 
   const channelNames = channels.filter((i) => i.id !== data.id).map((i) => i.name);
 
-  yup.setLocale(locale);
-
   const getValidationSchema = (names) => yup.object().shape({
     name: yup.string()
-      .min(3, 'Too Short!')
-      .max(20, 'Too Long!')
-      .required('Required')
-      .notOneOf(names, 'Already exists!'),
+      .min(3, t('errors.validation.min3'))
+      .max(20, t('errors.validation.max20'))
+      .required(t('errors.validation.required'))
+      .notOneOf(names, t('errors.validation.channelExists')),
   });
 
   const formik = useFormik({
@@ -71,7 +70,7 @@ const RenameChannelModal = (props) => {
   return (
     <Modal show={isOpened} onHide={handleClose}>
       <Modal.Header>
-        <Modal.Title>Переименовать канал</Modal.Title>
+        <Modal.Title>{t('titles.renameChannel')}</Modal.Title>
         <Button
           variant="close"
           type="button"
@@ -110,14 +109,14 @@ const RenameChannelModal = (props) => {
                 type="button"
                 onClick={handleClose}
               >
-                Отменить
+                {t('actions.cancel')}
               </Button>
               <Button
                 variant="primary"
                 type="submit"
                 disabled={formik.isSubmitting}
               >
-                Отправить
+                {t('actions.send')}
               </Button>
             </div>
           </Form.Group>

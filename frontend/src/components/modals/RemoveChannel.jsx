@@ -2,6 +2,7 @@ import axios from 'axios';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { Modal, Button } from 'react-bootstrap';
+import { useTranslation } from 'react-i18next';
 import useAuth from '../../hooks/index.jsx';
 
 import { closeModal } from '../../slices/modalSlice.js';
@@ -14,6 +15,7 @@ const RemoveChannelModal = (props) => {
   const dispatch = useDispatch();
   const isOpened = useSelector((state) => state.modal.isOpened);
   const defaultChannel = useSelector((state) => state.channels.defaultChannel);
+  const { t } = useTranslation();
   const { data } = props;
   const handleClose = () => {
     dispatch(closeModal());
@@ -37,7 +39,7 @@ const RemoveChannelModal = (props) => {
     <Modal show={isOpened} onHide={handleClose}>
       <Modal.Header>
         <Modal.Title>
-          Удалить канал
+          {t('titles.deleteChannel')}
         </Modal.Title>
         <Button
           variant="close"
@@ -48,7 +50,7 @@ const RemoveChannelModal = (props) => {
         />
       </Modal.Header>
       <Modal.Body>
-        Уверены?
+        {t('titles.areYouSure')}
         <div className="d-flex justify-content-end">
           <Button
             className="me-2"
@@ -56,14 +58,14 @@ const RemoveChannelModal = (props) => {
             type="button"
             onClick={handleClose}
           >
-            Отменить
+            {t('actions.cancel')}
           </Button>
           <Button
             variant="danger"
             type="button"
             onClick={handleRemove}
           >
-            Удалить
+            {t('actions.delete')}
           </Button>
         </div>
 

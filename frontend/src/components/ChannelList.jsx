@@ -84,10 +84,10 @@ const ChannelList = ({ channels, activeChannel }) => {
                   </Dropdown.Toggle>
                   <Dropdown.Menu>
                     <Dropdown.Item onClick={() => handleRemoveChannel(channel.id)}>
-                      Удалить
+                      {t('actions.delete')}
                     </Dropdown.Item>
                     <Dropdown.Item onClick={() => handleRenameChannel(channel)}>
-                      Переименовать
+                      {t('actions.rename')}
                     </Dropdown.Item>
                   </Dropdown.Menu>
                 </Dropdown>
