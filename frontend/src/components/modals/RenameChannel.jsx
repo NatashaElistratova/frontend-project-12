@@ -1,4 +1,3 @@
-import axios from 'axios';
 import * as yup from 'yup';
 import { useEffect, useRef } from 'react';
 import { useFormik } from 'formik';
@@ -7,10 +6,11 @@ import {
   Form, InputGroup, Modal, Button,
 } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
-import routes from '../../routes.js';
+import { toast } from 'react-toastify';
 import { closeModal } from '../../slices/modalSlice.js';
 import { updateChannel } from '../../slices/channelSlice.js';
 import useAuth from '../../hooks/index.jsx';
+import api from '../../api.js';
 
 const RenameChannelModal = (props) => {
   const auth = useAuth();
@@ -44,17 +44,17 @@ const RenameChannelModal = (props) => {
     onSubmit: async ({ name, resetForm, setSubmitting }) => {
       const payload = { ...data, name };
       try {
-        const response = await axios.patch(
-          `${routes.channelsPath()}/${data.id}`,
+        const response = await api.renameChannel(
           payload,
-          { headers: auth.getAuthHeader() },
+          auth.getAuthHeader(),
         );
-        dispatch(updateChannel(response.data));
+        dispatch(updateChannel(response));
         dispatch(closeModal());
+        toast.success(t('success.renameChannel'));
         setSubmitting(false);
         resetForm();
       } catch (error) {
-        formik.errors = error.data;
+        console.error(error);
       }
     },
   });

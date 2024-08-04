@@ -1,4 +1,3 @@
-import axios from 'axios';
 import * as yup from 'yup';
 import { useEffect, useRef } from 'react';
 import { useFormik } from 'formik';
@@ -7,10 +6,11 @@ import {
   Form, InputGroup, Modal, Button,
 } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
 import useAuth from '../../hooks/index.jsx';
-import routes from '../../routes.js';
 import { closeModal } from '../../slices/modalSlice.js';
 import { setChannels, selectChannel } from '../../slices/channelSlice.js';
+import api from '../../api.js';
 
 const AddChannelModal = () => {
   const auth = useAuth();
@@ -42,19 +42,19 @@ const AddChannelModal = () => {
       const channelData = { name };
 
       try {
-        const response = await axios.post(
-          routes.channelsPath(),
+        const response = await api.addChannel(
           channelData,
-          { headers: auth.getAuthHeader() },
+          auth.getAuthHeader(),
         );
 
-        dispatch(setChannels([response.data]));
-        dispatch(selectChannel(response.data));
+        dispatch(setChannels([response]));
+        dispatch(selectChannel(response));
         dispatch(closeModal());
+        toast.success(t('success.addChannel'));
         setSubmitting(false);
         resetForm();
       } catch (error) {
-        formik.errors = error.data;
+        console.error(error);
       }
     },
   });

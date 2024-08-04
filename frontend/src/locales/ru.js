@@ -37,6 +37,14 @@ export default {
       },
       usernameOrPassword: 'Неверные имя пользователя или пароль',
       loginExists: 'Пользователь с таким логином уже существует',
+      fetchChannels: 'Ошибка загрузки каналов',
+      fetchMessages: 'Ошибка загрузки сообщений',
+      networkError: 'Ошибка сети',
+    },
+    success: {
+      addChannel: 'Канал успешно добавлен',
+      removeChannel: 'Канал успешно удален',
+      renameChannel: 'Канал успешно переименован',
     },
   },
 };

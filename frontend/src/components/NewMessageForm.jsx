@@ -1,4 +1,3 @@
-import axios from 'axios';
 import { useFormik } from 'formik';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
@@ -7,8 +6,8 @@ import { ArrowRightSquare } from 'react-bootstrap-icons';
 import { useSelector } from 'react-redux';
 import { useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
-import routes from '../routes.js';
 import useAuth from '../hooks/index.jsx';
+import api from '../api.js';
 
 const NewMessageForm = () => {
   const auth = useAuth();
@@ -31,15 +30,14 @@ const NewMessageForm = () => {
         username: userdata.username,
       };
 
-      await axios.post(
-        routes.messagesPath(),
+      await api.postMessage(
         messageData,
-        { headers: auth.getAuthHeader() },
-      ).then(() => {
-        formik.resetForm();
-        formik.setSubmitting(false);
-        inputRef.current.focus();
-      });
+        auth.getAuthHeader(),
+      );
+
+      formik.resetForm();
+      formik.setSubmitting(false);
+      inputRef.current.focus();
     },
   });
   const isInvalid = !formik.dirty || !formik.isValid;

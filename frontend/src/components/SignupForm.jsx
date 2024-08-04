@@ -1,4 +1,3 @@
-import axios from 'axios';
 import * as yup from 'yup';
 import { useRef, useState, useEffect } from 'react';
 import { useFormik } from 'formik';
@@ -9,6 +8,7 @@ import { useTranslation } from 'react-i18next';
 import useAuth from '../hooks/index.jsx';
 import routes from '../routes.js';
 import locale from '../locales/locale.js';
+import api from '../api.js';
 
 const SignupForm = () => {
   const auth = useAuth();
@@ -45,8 +45,8 @@ const SignupForm = () => {
       setSignupFailed(false);
 
       try {
-        const res = await axios.post(routes.signupPath(), values);
-        localStorage.setItem('user', JSON.stringify(res.data));
+        const response = await api.postAuthData(routes.signupPath(), values);
+        localStorage.setItem('user', JSON.stringify(response));
         auth.logIn();
         const navigatePath = routes.chatPagePath();
         navigate(navigatePath);

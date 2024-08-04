@@ -1,4 +1,3 @@
-import axios from 'axios';
 import React, { useRef, useState, useEffect } from 'react';
 import { useFormik } from 'formik';
 import Form from 'react-bootstrap/Form';
@@ -7,6 +6,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import useAuth from '../hooks/index.jsx';
 import routes from '../routes.js';
+import api from '../api.js';
 
 const LoginForm = () => {
   const auth = useAuth();
@@ -26,11 +26,11 @@ const LoginForm = () => {
       setAuthFailed(false);
 
       try {
-        const res = await axios.post(routes.loginPath(), values);
-        localStorage.setItem('user', JSON.stringify(res.data));
+        const response = await api.postAuthData(routes.loginPath(), values);
+        localStorage.setItem('user', JSON.stringify(response));
         auth.logIn();
         const { from } = location.state;
-        const navigatePath = from || routes.loginPagePath();
+        const navigatePath = from || routes.chatPagePath();
         navigate(navigatePath);
       } catch (err) {
         formik.setSubmitting(false);

@@ -1,14 +1,11 @@
-import axios from 'axios';
-
 import { useDispatch, useSelector } from 'react-redux';
 import { Modal, Button } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
 import useAuth from '../../hooks/index.jsx';
-
 import { closeModal } from '../../slices/modalSlice.js';
 import { removeChannel, selectChannel } from '../../slices/channelSlice.js';
-
-import routes from '../../routes.js';
+import api from '../../api.js';
 
 const RemoveChannelModal = (props) => {
   const auth = useAuth();
@@ -23,13 +20,14 @@ const RemoveChannelModal = (props) => {
 
   const handleRemove = async () => {
     try {
-      const response = await axios.delete(
-        `${routes.channelsPath()}/${data.channelId}`,
-        { headers: auth.getAuthHeader() },
+      const response = await api.removeChannel(
+        data.channelId,
+        auth.getAuthHeader(),
       );
-      dispatch(removeChannel(response.data.id));
+      dispatch(removeChannel(response.id));
       dispatch(selectChannel(defaultChannel));
       dispatch(closeModal());
+      toast.success(t('success.removeChannel'));
     } catch (error) {
       console.error(error);
     }

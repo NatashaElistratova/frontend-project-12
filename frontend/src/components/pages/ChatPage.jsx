@@ -1,17 +1,16 @@
-import axios from 'axios';
 import io from 'socket.io-client';
 import React, { useEffect } from 'react';
-
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
 import useAuth from '../../hooks/index.jsx';
 import { setChannels } from '../../slices/channelSlice.js';
 import { setMessages } from '../../slices/messageSlice.js';
-
 import ChannelList from '../ChannelList.jsx';
 import NewMessageForm from '../NewMessageForm.jsx';
-
 import routes from '../../routes.js';
+import api from '../../api.js';
 
 const ChatPage = () => {
   const auth = useAuth();
@@ -20,6 +19,7 @@ const ChatPage = () => {
   const messages = useSelector((state) => state.messages.messages);
   const filteredMessages = messages.filter((message) => message.channelId === activeChannel.id);
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   const dispatch = useDispatch();
 
@@ -32,25 +32,38 @@ const ChatPage = () => {
   };
 
   const fetchMessages = async () => {
-    const { data } = await axios.get(routes.messagesPath(), {
-      headers: auth.getAuthHeader(),
-    });
-    dispatch(setMessages(data));
-    fetchNewMessages();
+    try {
+      const { data } = await api.fetchData(routes.messagesPath(), auth.getAuthHeader());
+      dispatch(setMessages(data));
+      fetchNewMessages();
+    } catch (error) {
+      toast.error(t('errors.fetchMessages'));
+    }
   };
 
   useEffect(() => {
     const fetchChannels = async () => {
-      const { data } = await axios
-        .get(routes.channelsPath(), { headers: auth.getAuthHeader() })
-        .catch((e) => {
-          if (e.isAxiosError && e.response.status === 401) {
-            navigate(routes.loginPagePath());
-          }
-        });
+      try {
+        const { data } = await api.fetchData(routes.channelsPath(), auth.getAuthHeader());
 
-      dispatch(setChannels(data));
-      fetchMessages();
+        dispatch(setChannels(data));
+        fetchMessages();
+      } catch (e) {
+        if (e.isAxiosError) {
+          switch (e.response.status) {
+            case 401:
+              navigate(routes.loginPagePath());
+              break;
+            case 500:
+              toast.error(t('errors.networkError'));
+              break;
+            default:
+              break;
+          }
+        }
+
+        toast.error(t('errors.fetchChannels'));
+      }
     };
 
     fetchChannels();
