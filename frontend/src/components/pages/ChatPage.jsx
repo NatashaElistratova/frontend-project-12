@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
+import LeoProfanity from 'leo-profanity';
 import useAuth from '../../hooks/index.jsx';
 import { setChannels } from '../../slices/channelSlice.js';
 import { setMessages } from '../../slices/messageSlice.js';
@@ -13,11 +14,15 @@ import routes from '../../routes.js';
 import api from '../../api.js';
 
 const ChatPage = () => {
+  LeoProfanity.loadDictionary('ru');
   const auth = useAuth();
   const channels = useSelector((state) => state.channels.channels);
   const activeChannel = useSelector((state) => state.channels.activeChannel);
   const messages = useSelector((state) => state.messages.messages);
-  const filteredMessages = messages.filter((message) => message.channelId === activeChannel.id);
+  const filteredMessages = messages.filter((message) => {
+    const 
+  }
+    LeoProfanity.clean(message.channelId === activeChannel.id));
   const navigate = useNavigate();
   const { t } = useTranslation();
 
