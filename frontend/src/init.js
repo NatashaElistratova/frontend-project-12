@@ -11,21 +11,22 @@ import forbiddenWords from './locales/forbiddenWords.js';
 
 import 'react-toastify/dist/ReactToastify.css';
 
-const rollbarConfig = {
-  accessToken: process.env.ROLLBAR_TOKEN,
-  enabled: process.env.NODE_ENV === 'production',
-  environment: 'prod',
-};
-
-function TestError() {
-  const a = null;
-  return a.hello();
-}
-
 const init = async () => {
   const toastDelay = 5000;
+
   leoProfanity.loadDictionary('ru');
   leoProfanity.add(forbiddenWords);
+
+  const rollbarConfig = {
+    accessToken: process.env.REACT_APP_ROLLBAR_TOKEN,
+    enabled: process.env.NODE_ENV === 'production',
+    environment: 'prod',
+  };
+
+  function TestError() {
+    const a = null;
+    return a.hello();
+  }
   const i18nextInstance = i18next.createInstance();
   await i18nextInstance
     .use(initReactI18next)
