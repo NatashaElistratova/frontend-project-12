@@ -23,10 +23,6 @@ const init = async () => {
     environment: 'prod',
   };
 
-  function TestError() {
-    const a = null;
-    return a.hello();
-  }
   const i18nextInstance = i18next.createInstance();
   await i18nextInstance
     .use(initReactI18next)
@@ -39,19 +35,19 @@ const init = async () => {
   return (
     <RollbarProvider config={rollbarConfig}>
       <ErrorBoundary>
-        <TestError />
+        <Provider store={store}>
+          <I18nextProvider i18n={i18nextInstance}>
+            <ToastContainer
+              autoClose={toastDelay}
+              hideProgressBar={false}
+              newestOnTop={false}
+              pauseOnHover
+            />
+            <App />
+          </I18nextProvider>
+        </Provider>
       </ErrorBoundary>
-      <Provider store={store}>
-        <I18nextProvider i18n={i18nextInstance}>
-          <ToastContainer
-            autoClose={toastDelay}
-            hideProgressBar={false}
-            newestOnTop={false}
-            pauseOnHover
-          />
-          <App />
-        </I18nextProvider>
-      </Provider>
+
     </RollbarProvider>
 
   );
