@@ -6,6 +6,7 @@ import { ArrowRightSquare } from 'react-bootstrap-icons';
 import { useSelector } from 'react-redux';
 import { useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
+import leoProfanity from 'leo-profanity';
 import useAuth from '../hooks/index.jsx';
 import api from '../api.js';
 
@@ -24,8 +25,9 @@ const NewMessageForm = () => {
     initialValues: { message: '' },
     validateOnBlur: false,
     onSubmit: async ({ message }) => {
+      const cleanMessage = leoProfanity.clean(message);
       const messageData = {
-        body: message,
+        body: cleanMessage,
         channelId: activeChannel.id,
         username: userdata.username,
       };

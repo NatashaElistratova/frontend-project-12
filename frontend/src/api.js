@@ -20,14 +20,14 @@ export default {
     );
     return response.data;
   },
-  removeChannel: async (url, channelId, headers) => {
+  removeChannel: async (channelId, headers) => {
     const response = await axios.delete(
       `${routes.channelsPath()}/${channelId}`,
       { headers },
     );
     return response.data;
   },
-  renameChannel: async (url, payload, headers) => {
+  renameChannel: async (payload, headers) => {
     const response = await axios.patch(
       `${routes.channelsPath()}/${payload.id}`,
       payload,

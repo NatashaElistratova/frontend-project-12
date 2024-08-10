@@ -7,6 +7,7 @@ import {
 } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
+import leoProfanity from 'leo-profanity';
 import { closeModal } from '../../slices/modalSlice.js';
 import { updateChannel } from '../../slices/channelSlice.js';
 import useAuth from '../../hooks/index.jsx';
@@ -42,7 +43,8 @@ const RenameChannelModal = (props) => {
     validateOnBlur: false,
     validationSchema: getValidationSchema(channelNames),
     onSubmit: async ({ name, resetForm, setSubmitting }) => {
-      const payload = { ...data, name };
+      const cleanName = leoProfanity.clean(name);
+      const payload = { ...data, name: cleanName };
       try {
         const response = await api.renameChannel(
           payload,
