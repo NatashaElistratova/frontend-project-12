@@ -47,9 +47,7 @@ const init = async () => {
           </I18nextProvider>
         </Provider>
       </ErrorBoundary>
-
     </RollbarProvider>
-
   );
 };
 
