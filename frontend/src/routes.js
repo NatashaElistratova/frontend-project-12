@@ -8,7 +8,6 @@ const routes = {
   chatPagePath: () => '/',
   loginPagePath: () => '/login',
   signupPagePath: () => '/signup',
-
 };
 
 export default routes;

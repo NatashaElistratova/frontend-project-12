@@ -4,12 +4,11 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import useAuth from '../hooks/index.jsx';
 import routes from '../routes.js';
 import api from '../api.js';
+import { logIn } from '../slices/authSlice';
 
 const LoginForm = () => {
-  const auth = useAuth();
   const [authFailed, setAuthFailed] = useState(false);
   const inputRef = useRef();
   const location = useLocation();
@@ -27,8 +26,7 @@ const LoginForm = () => {
 
       try {
         const response = await api.postAuthData(routes.loginPath(), values);
-        localStorage.setItem('user', JSON.stringify(response));
-        auth.logIn();
+        logIn(response);
         const { from } = location.state;
         const navigatePath = from || routes.chatPagePath();
         navigate(navigatePath);

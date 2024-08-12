@@ -1,12 +1,19 @@
-import { configureStore } from '@reduxjs/toolkit';
+import { configureStore, combineReducers } from '@reduxjs/toolkit';
+import authReducer from './authSlice.js';
 import channelReducer from './channelSlice.js';
 import messageReducer from './messageSlice.js';
 import modalReducer from './modalSlice.js';
+import { channelsApi } from '../api/channelsApi.js';
+
+const reducer = combineReducers({
+  auth: authReducer,
+  channels: channelReducer,
+  messages: messageReducer,
+  modal: modalReducer,
+  [channelsApi.reducerPath]: channelsApi.reducer,
+});
 
 export default configureStore({
-  reducer: {
-    channels: channelReducer,
-    messages: messageReducer,
-    modal: modalReducer,
-  },
+  reducer,
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(channelsApi.middleware),
 });
