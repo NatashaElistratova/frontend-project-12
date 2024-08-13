@@ -4,6 +4,7 @@ import channelReducer from './channelSlice.js';
 import messageReducer from './messageSlice.js';
 import modalReducer from './modalSlice.js';
 import { channelsApi } from '../api/channelsApi.js';
+import { messagesApi } from '../api/messagesApi.js';
 
 const reducer = combineReducers({
   auth: authReducer,
@@ -11,9 +12,11 @@ const reducer = combineReducers({
   messages: messageReducer,
   modal: modalReducer,
   [channelsApi.reducerPath]: channelsApi.reducer,
+  [messagesApi.reducerPath]: messagesApi.reducer,
 });
 
 export default configureStore({
   reducer,
-  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(channelsApi.middleware),
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware()
+    .concat(channelsApi.middleware, messagesApi.middleware),
 });

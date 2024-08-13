@@ -7,15 +7,15 @@ import { useSelector } from 'react-redux';
 import { useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import leoProfanity from 'leo-profanity';
-import useAuth from '../hooks/index.jsx';
-import api from '../api.js';
+import { useCreateMessageMutation } from '../api/messagesApi.js';
 
 const NewMessageForm = () => {
-  const auth = useAuth();
   const activeChannel = useSelector((state) => state.channels.activeChannel);
-  const userdata = JSON.parse(localStorage.getItem('user'));
+  const userData = useSelector((state) => state.auth.user);
   const inputRef = useRef();
   const { t } = useTranslation();
+
+  const [createMessage] = useCreateMessageMutation();
 
   useEffect(() => {
     inputRef.current.focus();
@@ -29,13 +29,10 @@ const NewMessageForm = () => {
       const messageData = {
         body: cleanMessage,
         channelId: activeChannel.id,
-        username: userdata.username,
+        username: userData.username,
       };
 
-      await api.postMessage(
-        messageData,
-        auth.getAuthHeader(),
-      );
+      await createMessage(messageData);
 
       formik.resetForm();
       formik.setSubmitting(false);

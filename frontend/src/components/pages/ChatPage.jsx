@@ -9,16 +9,20 @@ import { setMessages } from '../../slices/messageSlice.js';
 import ChannelList from '../ChannelList.jsx';
 import NewMessageForm from '../NewMessageForm.jsx';
 import { useGetChannelsQuery } from '../../api/channelsApi.js';
+import { useGetMessagesQuery } from '../../api/messagesApi.js';
 import routes from '../../routes.js';
-import api from '../../api.js';
 
 const ChatPage = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { t } = useTranslation();
 
-  const { data: channelsData, error: getChannelsError } = useGetChannelsQuery(undefined);
+  const channels = useSelector((state) => state.channels.channels);
+  const activeChannel = useSelector((state) => state.channels.activeChannel);
+  const messages = useSelector((state) => state.messages.messages);
+  const filteredMessages = messages.filter((message) => message.channelId === activeChannel.id);
 
+  const { data: channelsData, error: getChannelsError } = useGetChannelsQuery(undefined);
   useEffect(() => {
     if (channelsData?.length) {
       dispatch(setChannels(channelsData));
@@ -42,11 +46,6 @@ const ChatPage = () => {
     toast.error(t('errors.fetchChannels'));
   }, [channelsData, getChannelsError]);
 
-  const channels = useSelector((state) => state.channels.channels);
-  const activeChannel = useSelector((state) => state.channels.activeChannel);
-  const messages = useSelector((state) => state.messages.messages);
-  const filteredMessages = messages.filter((message) => message.channelId === activeChannel.id);
-
   const fetchNewMessages = async () => {
     const socket = io();
 
@@ -55,17 +54,18 @@ const ChatPage = () => {
     });
   };
 
-  const fetchMessages = async () => {
-    try {
-      const { data } = await api.fetchData(routes.messagesPath());
-      dispatch(setMessages(data));
+  const { data: messagesData, error: getMessagesError } = useGetMessagesQuery(undefined);
+  useEffect(() => {
+    if (messagesData?.length) {
+      dispatch(setMessages(messagesData));
       fetchNewMessages();
-    } catch (error) {
-      toast.error(t('errors.fetchMessages'));
+      return;
     }
-  };
 
-  fetchMessages();
+    if (!getMessagesError) return;
+
+    toast.error(t('errors.fetchMessages'));
+  }, [messagesData, getMessagesError]);
 
   return (
     <div className="container h-100 my-4 overflow-hidden rounded shadow">
