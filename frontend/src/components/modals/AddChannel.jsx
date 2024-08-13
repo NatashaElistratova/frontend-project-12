@@ -8,16 +8,16 @@ import {
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 import leoProfanity from 'leo-profanity';
-import useAuth from '../../hooks/index.jsx';
 import { closeModal } from '../../slices/modalSlice.js';
 import { setChannels, selectChannel } from '../../slices/channelSlice.js';
-import api from '../../api.js';
+import { useAddChannelMutation } from '../../api/channelsApi.js';
 
 const AddChannelModal = () => {
-  const auth = useAuth();
   const dispatch = useDispatch();
   const inputRef = useRef();
   const { t } = useTranslation();
+
+  const [addChannel] = useAddChannelMutation();
 
   const isOpened = useSelector((state) => state.modal.isOpened);
   const channels = useSelector((state) => state.channels.channels);
@@ -44,13 +44,10 @@ const AddChannelModal = () => {
       const channelData = { name: cleanName };
 
       try {
-        const response = await api.addChannel(
-          channelData,
-          auth.getAuthHeader(),
-        );
+        const { data } = await addChannel(channelData);
 
-        dispatch(setChannels([response]));
-        dispatch(selectChannel(response));
+        dispatch(setChannels([data]));
+        dispatch(selectChannel(data));
         dispatch(closeModal());
         toast.success(t('success.addChannel'));
         setSubmitting(false);

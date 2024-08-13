@@ -9,26 +9,26 @@ import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 import leoProfanity from 'leo-profanity';
 import { closeModal } from '../../slices/modalSlice.js';
-import { updateChannel } from '../../slices/channelSlice.js';
-import useAuth from '../../hooks/index.jsx';
-import api from '../../api.js';
+import { renameChannel } from '../../slices/channelSlice.js';
+import { useUpdateChannelMutation } from '../../api/channelsApi.js';
 
 const RenameChannelModal = (props) => {
-  const auth = useAuth();
   const dispatch = useDispatch();
   const isOpened = useSelector((state) => state.modal.isOpened);
   const channels = useSelector((state) => state.channels.channels);
   const inputRef = useRef();
   const { t } = useTranslation();
 
-  const { data } = props;
+  const { modalData } = props;
+
+  const [updateChannel] = useUpdateChannelMutation();
 
   useEffect(() => {
     inputRef.current.focus();
     inputRef.current.select();
   }, []);
 
-  const channelNames = channels.filter((i) => i.id !== data.id).map((i) => i.name);
+  const channelNames = channels.filter((i) => i.id !== modalData.id).map((i) => i.name);
 
   const getValidationSchema = (names) => yup.object().shape({
     name: yup.string()
@@ -39,18 +39,16 @@ const RenameChannelModal = (props) => {
   });
 
   const formik = useFormik({
-    initialValues: { name: data.name },
+    initialValues: { name: modalData.name },
     validateOnBlur: false,
     validationSchema: getValidationSchema(channelNames),
     onSubmit: async ({ name, resetForm, setSubmitting }) => {
       const cleanName = leoProfanity.clean(name);
-      const payload = { ...data, name: cleanName };
+      const payload = { ...modalData, name: cleanName };
       try {
-        const response = await api.renameChannel(
-          payload,
-          auth.getAuthHeader(),
-        );
-        dispatch(updateChannel(response));
+        const { data } = await updateChannel(payload);
+        console.log(data);
+        dispatch(renameChannel(data));
         dispatch(closeModal());
         toast.success(t('success.renameChannel'));
         setSubmitting(false);

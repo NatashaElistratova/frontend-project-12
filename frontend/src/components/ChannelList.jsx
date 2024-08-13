@@ -21,7 +21,7 @@ const ChannelList = ({ channels, activeChannel }) => {
     }
 
     const Component = getModal({ type, data });
-    return <Component data={data} />;
+    return <Component modalData={data} />;
   };
 
   const handleAddChannel = () => {

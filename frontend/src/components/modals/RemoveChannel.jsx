@@ -2,29 +2,27 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Modal, Button } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
-import useAuth from '../../hooks/index.jsx';
 import { closeModal } from '../../slices/modalSlice.js';
 import { removeChannel, selectChannel } from '../../slices/channelSlice.js';
-import api from '../../api.js';
+import { useDeleteChannelMutation } from '../../api/channelsApi.js';
 
 const RemoveChannelModal = (props) => {
-  const auth = useAuth();
   const dispatch = useDispatch();
   const isOpened = useSelector((state) => state.modal.isOpened);
   const defaultChannel = useSelector((state) => state.channels.defaultChannel);
   const { t } = useTranslation();
-  const { data } = props;
+  const { modalData } = props;
+
+  const [deleteChannel] = useDeleteChannelMutation();
+
   const handleClose = () => {
     dispatch(closeModal());
   };
 
   const handleRemove = async () => {
     try {
-      const response = await api.removeChannel(
-        data.channelId,
-        auth.getAuthHeader(),
-      );
-      dispatch(removeChannel(response.id));
+      const { data } = await deleteChannel(modalData.channelId);
+      dispatch(removeChannel(data.id));
       dispatch(selectChannel(defaultChannel));
       dispatch(closeModal());
       toast.success(t('success.removeChannel'));

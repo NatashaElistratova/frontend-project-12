@@ -17,11 +17,12 @@ const channelSlice = createSlice({
       const filteredChannels = state.channels.filter((channel) => channel.id !== action.payload);
       state.channels = filteredChannels;
     },
-    updateChannel: (state, action) => {
-      const updatedValue = state.channels
-        .map((i) => (i.id === action.payload.id ? action.payload : i));
+    renameChannel: (state, action) => {
+      const channelIndex = state.channels.findIndex((i) => i.id === action.payload.id);
 
-      state.channels = updatedValue;
+      if (channelIndex === -1) return;
+
+      state.channels[channelIndex].name = action.payload.name;
     },
     selectChannel: (state, action) => {
       state.activeChannel = action.payload;
@@ -30,7 +31,7 @@ const channelSlice = createSlice({
 });
 
 export const {
-  setChannels, selectChannel, removeChannel, updateChannel,
+  setChannels, selectChannel, removeChannel, renameChannel,
 } = channelSlice.actions;
 
 export default channelSlice.reducer;
