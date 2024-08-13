@@ -30,8 +30,8 @@ const PrivateRoute = ({ children }) => {
 
 const App = () => (
   <div className="d-flex flex-column h-100">
-    <NavbarComponent />
     <BrowserRouter>
+      <NavbarComponent />
       <Routes>
         <Route
           path={routes.chatPagePath()}

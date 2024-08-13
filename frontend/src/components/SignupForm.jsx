@@ -4,18 +4,21 @@ import { useFormik } from 'formik';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
-import useAuth from '../hooks/index.jsx';
 import routes from '../routes.js';
 import locale from '../locales/locale.js';
-import api from '../api.js';
+import { logIn } from '../slices/authSlice';
+import { useSignupMutation } from '../api/authApi.js';
 
 const SignupForm = () => {
-  const auth = useAuth();
   const [signupFailed, setSignupFailed] = useState(false);
   const inputRef = useRef();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const { t } = useTranslation();
+
+  const [signup] = useSignupMutation();
 
   yup.setLocale(locale);
 
@@ -45,11 +48,9 @@ const SignupForm = () => {
       setSignupFailed(false);
 
       try {
-        const response = await api.postAuthData(routes.signupPath(), values);
-        localStorage.setItem('user', JSON.stringify(response));
-        auth.logIn();
-        const navigatePath = routes.chatPagePath();
-        navigate(navigatePath);
+        const { data } = await signup(values);
+        dispatch(logIn(data));
+        navigate(routes.chatPagePath());
       } catch (err) {
         formik.setSubmitting(false);
         setSignupFailed(true);

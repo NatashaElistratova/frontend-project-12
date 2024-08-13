@@ -3,17 +3,21 @@ import { useFormik } from 'formik';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import routes from '../routes.js';
-import api from '../api.js';
 import { logIn } from '../slices/authSlice';
+import { useLoginMutation } from '../api/authApi.js';
 
 const LoginForm = () => {
   const [authFailed, setAuthFailed] = useState(false);
   const inputRef = useRef();
   const location = useLocation();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const { t } = useTranslation();
+
+  const [login] = useLoginMutation();
 
   useEffect(() => {
     inputRef.current.focus();
@@ -25,10 +29,9 @@ const LoginForm = () => {
       setAuthFailed(false);
 
       try {
-        const response = await api.postAuthData(routes.loginPath(), values);
-        logIn(response);
-        const { from } = location.state;
-        const navigatePath = from || routes.chatPagePath();
+        const { data } = await login(values);
+        dispatch(logIn(data));
+        const navigatePath = location?.state?.from || routes.chatPagePath();
         navigate(navigatePath);
       } catch (err) {
         formik.setSubmitting(false);
