@@ -94,7 +94,7 @@ const SignupForm = () => {
             id="password"
             isInvalid={formik.errors.password || signupFailed}
           />
-          <Form.Label htmlFor="username">{t('placeholders.password')}</Form.Label>
+          <Form.Label htmlFor="password">{t('placeholders.password')}</Form.Label>
           <Form.Control.Feedback type="invalid" tooltip placement="right">
             {formik.errors.password}
           </Form.Control.Feedback>
@@ -109,7 +109,7 @@ const SignupForm = () => {
             id="confirmPassword"
             isInvalid={formik.errors.confirmPassword || signupFailed}
           />
-          <Form.Label htmlFor="username">{t('placeholders.repeatPassword')}</Form.Label>
+          <Form.Label htmlFor="confirmPassword">{t('placeholders.repeatPassword')}</Form.Label>
           <Form.Control.Feedback type="invalid" tooltip placement="right">
             {formik.errors.confirmPassword}
           </Form.Control.Feedback>
