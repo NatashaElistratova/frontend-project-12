@@ -49,6 +49,7 @@ const ChannelList = ({ channels, activeChannel }) => {
         <b>{t('titles.channels')}</b>
         <Button
           type="button"
+          role="button"
           variant="group-vertical"
           className="p-0 text-primary"
           onClick={handleAddChannel}
@@ -67,6 +68,7 @@ const ChannelList = ({ channels, activeChannel }) => {
                 <Dropdown as={ButtonGroup} className="d-flex">
                   <Button
                     type="button"
+                    role="button"
                     key={channel.id}
                     className="w-100 rounded-0 text-start text-truncate"
                     variant={channel.id === activeChannel.id ? 'secondary' : 'light'}
@@ -95,6 +97,7 @@ const ChannelList = ({ channels, activeChannel }) => {
               : (
                 <Button
                   type="button"
+                  role="button"
                   className="w-100 rounded-0 text-start btn"
                   variant={channel.id === activeChannel.id ? 'secondary' : 'light'}
                   onClick={() => handleChooseChannel(channel)}

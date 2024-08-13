@@ -2,19 +2,19 @@ lint-frontend:
 	make -C frontend lint
 
 install:
-	npm ci --legacy-peer-deps
+	npm ci
 
 start-frontend:
-	npx react-scripts start
+	make -C frontend start
 
 start-backend:
-	npx start-server -p 5001
+	npx start-server
 
 deploy:
 	git push heroku main
 
 start:
-	npm start
+	make start-backend
 
 develop:
 	make start-backend & make start-frontend

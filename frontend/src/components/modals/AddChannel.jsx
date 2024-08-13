@@ -73,6 +73,7 @@ const AddChannelModal = () => {
         <Button
           variant="close"
           type="button"
+          role="button"
           onClick={handleClose}
           aria-label="Close"
           data-bs-dismiss="modal"
@@ -106,6 +107,7 @@ const AddChannelModal = () => {
                 className="me-2"
                 variant="secondary"
                 type="button"
+                role="button"
                 onClick={handleClose}
               >
                 {t('actions.cancel')}

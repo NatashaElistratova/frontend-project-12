@@ -40,6 +40,7 @@ const RemoveChannelModal = (props) => {
         <Button
           variant="close"
           type="button"
+          role="button"
           onClick={handleClose}
           aria-label="Close"
           data-bs-dismiss="modal"
@@ -52,6 +53,7 @@ const RemoveChannelModal = (props) => {
             className="me-2"
             variant="secondary"
             type="button"
+            role="button"
             onClick={handleClose}
           >
             {t('actions.cancel')}
@@ -59,6 +61,7 @@ const RemoveChannelModal = (props) => {
           <Button
             variant="danger"
             type="button"
+            role="button"
             onClick={handleRemove}
           >
             {t('actions.delete')}

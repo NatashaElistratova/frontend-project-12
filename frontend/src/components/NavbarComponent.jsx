@@ -15,7 +15,7 @@ const NavbarComponent = () => {
         <Navbar.Brand href="/">Hexlet Chat</Navbar.Brand>
         {user.token
           ? (
-            <Button type="button" onClick={() => logOut()}>
+            <Button role="button" type="button" onClick={() => logOut()}>
               {t('actions.logout')}
             </Button>
           ) : null}
