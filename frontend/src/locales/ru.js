@@ -36,7 +36,7 @@ export default {
         passwordsNotMach: 'Пароли должны совпадать',
       },
       usernameOrPassword: 'Неверные имя пользователя или пароль',
-      loginExists: 'Пользователь с таким логином уже существует',
+      loginExists: 'Такой пользователь уже существует',
       fetchChannels: 'Ошибка загрузки каналов',
       fetchMessages: 'Ошибка загрузки сообщений',
       networkError: 'Ошибка соединения',
