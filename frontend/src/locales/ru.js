@@ -21,6 +21,7 @@ export default {
     },
     placeholders: {
       typeMessage: 'Введите сообщение...',
+      newMessage: 'Новое сообщение',
       nickName: 'Ваш ник',
       password: 'Пароль',
       repeatPassword: 'Подтвердите пароль',

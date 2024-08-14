@@ -56,6 +56,7 @@ const NewMessageForm = () => {
           type="text"
           name="message"
           ref={inputRef}
+          aria-label={t('placeholders.newMessage')}
           required
           disabled={formik.isSubmitting}
           placeholder={t('placeholders.typeMessage')}
