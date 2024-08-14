@@ -17,7 +17,7 @@ const LoginForm = () => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
 
-  const [login] = useLoginMutation();
+  const [login, { data: loginData, error: loginError }] = useLoginMutation();
 
   useEffect(() => {
     inputRef.current.focus();
@@ -27,24 +27,25 @@ const LoginForm = () => {
     initialValues: { username: '', password: '' },
     onSubmit: async (values) => {
       setAuthFailed(false);
-
-      try {
-        const { data } = await login(values);
-        dispatch(logIn(data));
-        const navigatePath = location?.state?.from || routes.chatPagePath();
-        navigate(navigatePath);
-      } catch (err) {
-        formik.setSubmitting(false);
-
-        if (err.isAxiosError && err.response.status === 401) {
-          setAuthFailed(true);
-          inputRef.current.select();
-          return;
-        }
-        throw err;
-      }
+      await login(values);
     },
   });
+
+  useEffect(() => {
+    if (loginError) {
+      formik.setSubmitting(false);
+
+      if (loginError.status === 401) {
+        setAuthFailed(true);
+        inputRef.current.select();
+      }
+    }
+    if (loginData) {
+      dispatch(logIn(loginData));
+      const navigatePath = location?.state?.from || routes.chatPagePath();
+      navigate(navigatePath);
+    }
+  }, [loginData, loginError]);
   return (
     <div>
       <h1 className="row justify-content-center">{t('actions.login')}</h1>
