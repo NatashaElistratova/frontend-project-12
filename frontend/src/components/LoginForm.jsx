@@ -50,34 +50,37 @@ const LoginForm = () => {
       <h1 className="row justify-content-center">{t('actions.login')}</h1>
 
       <Form onSubmit={formik.handleSubmit}>
-        <Form.Control
-          onChange={formik.handleChange}
-          value={formik.values.username}
-          required
-          type="text"
-          size="lg"
-          name="username"
-          id="username"
-          placeholder={t('placeholders.nickName')}
-          className="mb-3"
-          ref={inputRef}
-          isInvalid={authFailed}
-        />
-        <Form.Control
-          onChange={formik.handleChange}
-          value={formik.values.password}
-          required
-          type="password"
-          size="lg"
-          name="password"
-          id="password"
-          placeholder={t('placeholders.password')}
-          className="mb-3"
-          isInvalid={authFailed}
-        />
-        <Form.Control.Feedback type="invalid">
-          {t('errors.usernameOrPassword')}
-        </Form.Control.Feedback>
+        <Form.Group className="form-floating mb-3">
+          <Form.Control
+            onChange={formik.handleChange}
+            value={formik.values.username}
+            required
+            type="text"
+            name="username"
+            id="username"
+            className="mb-3"
+            ref={inputRef}
+            isInvalid={authFailed}
+          />
+          <Form.Label htmlFor="username">{t('placeholders.nickName')}</Form.Label>
+        </Form.Group>
+        <Form.Group className="form-floating mb-3">
+          <Form.Control
+            onChange={formik.handleChange}
+            value={formik.values.password}
+            required
+            type="password"
+            name="password"
+            id="password"
+            className="mb-3"
+            isInvalid={authFailed}
+          />
+          <Form.Label htmlFor="password">{t('placeholders.password')}</Form.Label>
+          <Form.Control.Feedback type="invalid">
+            {t('errors.usernameOrPassword')}
+          </Form.Control.Feedback>
+        </Form.Group>
+
         <Button
           variant="outline-primary"
           className="w-100"
