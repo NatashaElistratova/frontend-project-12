@@ -26,6 +26,7 @@ export default {
       password: 'Пароль',
       repeatPassword: 'Подтвердите пароль',
       userName: 'Имя пользователя',
+      channelName: 'Имя канала',
     },
     errors: {
       validation: {
