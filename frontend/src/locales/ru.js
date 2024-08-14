@@ -9,6 +9,8 @@ export default {
       noAccount: 'Нет аккаунта?',
       signup: 'Регистрация',
       areYouSure: 'Уверены?',
+      newMessage: 'Новое сообщение',
+      manageChannel: 'Управление каналом',
     },
     actions: {
       login: 'Вoйти',
@@ -21,7 +23,6 @@ export default {
     },
     placeholders: {
       typeMessage: 'Введите сообщение...',
-      newMessage: 'Новое сообщение',
       nickName: 'Ваш ник',
       password: 'Пароль',
       repeatPassword: 'Подтвердите пароль',

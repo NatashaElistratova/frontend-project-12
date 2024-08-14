@@ -2,9 +2,7 @@ import * as yup from 'yup';
 import { useEffect, useRef } from 'react';
 import { useFormik } from 'formik';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-  Form, InputGroup, Modal, Button,
-} from 'react-bootstrap';
+import { Form, Modal, Button } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 import leoProfanity from 'leo-profanity';
@@ -84,22 +82,24 @@ const RenameChannelModal = (props) => {
           className="py-1"
         >
           <Form.Group>
-            <InputGroup hasValidation={isInvalid}>
+            <Form.Group className="form-floating">
               <Form.Control
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
                 value={formik.values.name}
                 type="text"
                 name="name"
+                id="channelName"
                 ref={inputRef}
                 disabled={formik.isSubmitting}
                 isInvalid={isInvalid}
                 className="border rounded-2 py-1 mb-2"
               />
+              <Form.Label htmlFor="channelName">{t('placeholders.channelName')}</Form.Label>
               <Form.Control.Feedback type="invalid">
                 {formik.errors.name}
               </Form.Control.Feedback>
-            </InputGroup>
+            </Form.Group>
             <div className="d-flex justify-content-end">
               <Button
                 className="me-2"

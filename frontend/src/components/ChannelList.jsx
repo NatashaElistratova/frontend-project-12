@@ -83,7 +83,7 @@ const ChannelList = ({ channels, activeChannel }) => {
                     className="flex-grow-0"
                     variant={channel.id === activeChannel.id ? 'secondary' : 'light'}
                   >
-                    <span className="visually-hidden" />
+                    <span className="visually-hidden">{t('titles.manageChannel')}</span>
                   </Dropdown.Toggle>
                   <Dropdown.Menu>
                     <Dropdown.Item onClick={() => handleRemoveChannel(channel.id)}>
