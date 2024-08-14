@@ -89,12 +89,11 @@ const AddChannelModal = () => {
                 onBlur={formik.handleBlur}
                 value={formik.values.name}
                 type="text"
-                name="channelName"
+                name="name"
                 id="channelName"
                 ref={inputRef}
                 disabled={formik.isSubmitting}
                 isInvalid={isInvalid}
-                className="border rounded-2 py-1 mb-2"
               />
               <Form.Label htmlFor="channelName">{t('placeholders.channelName')}</Form.Label>
               <Form.Control.Feedback type="invalid">
