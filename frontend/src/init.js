@@ -14,7 +14,8 @@ import 'react-toastify/dist/ReactToastify.css';
 const init = async () => {
   const toastDelay = 5000;
 
-  leoProfanity.loadDictionary('ru');
+  leoProfanity.add(leoProfanity.getDictionary('en'));
+  leoProfanity.add(leoProfanity.getDictionary('ru'));
   leoProfanity.add(forbiddenWords);
 
   const rollbarConfig = {
