@@ -55,6 +55,7 @@ const ChannelList = ({ channels, activeChannel }) => {
           onClick={handleAddChannel}
         >
           <PlusSquare size={20} />
+          <span className="visually-hidden">+</span>
         </Button>
       </div>
       <ul
