@@ -59,7 +59,7 @@ const ChatPage = () => {
     socket.on('newChannel', onNewChannel);
     socket.on('removeChannel', onRemoveChannel);
     socket.on('renameChannel', onRenameChannel);
-  }, [channelsData, getChannelsError]);
+  }, [channelsData, getChannelsError, dispatch, navigate]);
 
   const { data: messagesData, error: getMessagesError } = useGetMessagesQuery(undefined);
   useEffect(() => {

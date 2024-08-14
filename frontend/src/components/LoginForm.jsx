@@ -45,7 +45,7 @@ const LoginForm = () => {
       const navigatePath = location?.state?.from || routes.chatPagePath();
       navigate(navigatePath);
     }
-  }, [loginData, loginError]);
+  }, [loginData, loginError, dispatch, navigate]);
   return (
     <div>
       <h1 className="row justify-content-center">{t('actions.login')}</h1>

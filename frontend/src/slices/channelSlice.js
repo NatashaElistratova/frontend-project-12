@@ -10,21 +10,21 @@ const channelSlice = createSlice({
   name: 'channels',
   initialState,
   reducers: {
-    setChannels: (state, action) => {
+    setChannels(state, action) {
       state.channels = [...state.channels, ...action.payload];
     },
-    removeChannel: (state, action) => {
+    removeChannel(state, action) {
       const filteredChannels = state.channels.filter((channel) => channel.id !== action.payload);
       state.channels = filteredChannels;
     },
-    renameChannel: (state, action) => {
+    renameChannel(state, action) {
       const channelIndex = state.channels.findIndex((i) => i.id === action.payload.id);
 
       if (channelIndex === -1) return;
 
       state.channels[channelIndex].name = action.payload.name;
     },
-    selectChannel: (state, action) => {
+    selectChannel(state, action) {
       state.activeChannel = action.payload;
     },
   },

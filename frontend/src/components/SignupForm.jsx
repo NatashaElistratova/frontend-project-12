@@ -31,7 +31,7 @@ const SignupForm = () => {
       dispatch(logIn(signupData));
       navigate(routes.chatPagePath());
     }
-  }, [signupData, signupError]);
+  }, [signupData, signupError, dispatch, navigate]);
 
   yup.setLocale(locale);
 
