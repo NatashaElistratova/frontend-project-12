@@ -48,9 +48,8 @@ const SignupForm = () => {
       .min(6, t('errors.validation.min6'))
       .required(t('errors.validation.required')),
     confirmPassword: yup.string()
-      .min(6, t('errors.validation.min6'))
-      .required(t('errors.validation.required'))
-      .oneOf([yup.ref('password')], t('errors.validation.passwordsNotMach')),
+      .oneOf([yup.ref('password')], t('errors.validation.passwordsNotMach'))
+      .required(t('errors.validation.required')),
   });
 
   const formik = useFormik({
