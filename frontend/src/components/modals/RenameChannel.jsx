@@ -9,7 +9,6 @@ import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 import leoProfanity from 'leo-profanity';
 import { closeModal } from '../../slices/modalSlice.js';
-import { renameChannel } from '../../slices/channelSlice.js';
 import { useUpdateChannelMutation } from '../../api/channelsApi.js';
 
 const RenameChannelModal = (props) => {
@@ -46,9 +45,7 @@ const RenameChannelModal = (props) => {
       const cleanName = leoProfanity.clean(name);
       const payload = { ...modalData, name: cleanName };
       try {
-        const { data } = await updateChannel(payload);
-        console.log(data);
-        dispatch(renameChannel(data));
+        await updateChannel(payload);
         dispatch(closeModal());
         toast.success(t('success.renameChannel'));
         setSubmitting(false);

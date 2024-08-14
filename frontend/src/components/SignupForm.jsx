@@ -18,7 +18,20 @@ const SignupForm = () => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
 
-  const [signup] = useSignupMutation();
+  const [signup, { data: signupData, error: signupError }] = useSignupMutation();
+
+  useEffect(() => {
+    if (signupError) {
+      setSignupFailed(true);
+      if (signupError.status === 409) {
+        inputRef.current.select();
+      }
+    }
+    if (signupData) {
+      dispatch(logIn(signupData));
+      navigate(routes.chatPagePath());
+    }
+  }, [signupData, signupError]);
 
   yup.setLocale(locale);
 
@@ -37,7 +50,7 @@ const SignupForm = () => {
     confirmPassword: yup.string()
       .min(6, t('errors.validation.min6'))
       .required(t('errors.validation.required'))
-      .oneOf([yup.ref('password')], t('errorrs.validation.passwordsNotMach')),
+      .oneOf([yup.ref('password')], t('errors.validation.passwordsNotMach')),
   });
 
   const formik = useFormik({
@@ -46,21 +59,7 @@ const SignupForm = () => {
 
     onSubmit: async (values) => {
       setSignupFailed(false);
-
-      try {
-        const { data } = await signup(values);
-        dispatch(logIn(data));
-        navigate(routes.chatPagePath());
-      } catch (err) {
-        formik.setSubmitting(false);
-        setSignupFailed(true);
-
-        if (err.isAxiosError && err.response.status === 409) {
-          inputRef.current.select();
-          return;
-        }
-        throw err;
-      }
+      await signup(values);
     },
   });
 
@@ -92,7 +91,7 @@ const SignupForm = () => {
             type="password"
             name="password"
             id="password"
-            isInvalid={formik.errors.password || signupFailed}
+            isInvalid={formik.errors.password}
           />
           <Form.Label htmlFor="password">{t('placeholders.password')}</Form.Label>
           <Form.Control.Feedback type="invalid" tooltip placement="right">
@@ -107,7 +106,7 @@ const SignupForm = () => {
             type="password"
             name="confirmPassword"
             id="confirmPassword"
-            isInvalid={formik.errors.confirmPassword || signupFailed}
+            isInvalid={formik.errors.confirmPassword}
           />
           <Form.Label htmlFor="confirmPassword">{t('placeholders.repeatPassword')}</Form.Label>
           <Form.Control.Feedback type="invalid" tooltip placement="right">

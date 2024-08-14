@@ -9,7 +9,7 @@ import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 import leoProfanity from 'leo-profanity';
 import { closeModal } from '../../slices/modalSlice.js';
-import { setChannels, selectChannel } from '../../slices/channelSlice.js';
+import { selectChannel } from '../../slices/channelSlice.js';
 import { useAddChannelMutation } from '../../api/channelsApi.js';
 
 const AddChannelModal = () => {
@@ -46,7 +46,6 @@ const AddChannelModal = () => {
       try {
         const { data } = await addChannel(channelData);
 
-        dispatch(setChannels([data]));
         dispatch(selectChannel(data));
         dispatch(closeModal());
         toast.success(t('success.addChannel'));

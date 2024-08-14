@@ -1,10 +1,10 @@
-import io from 'socket.io-client';
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
-import { setChannels } from '../../slices/channelSlice.js';
+import socket from '../../socket.js';
+import { setChannels, removeChannel, renameChannel } from '../../slices/channelSlice.js';
 import { setMessages } from '../../slices/messageSlice.js';
 import ChannelList from '../ChannelList.jsx';
 import NewMessageForm from '../NewMessageForm.jsx';
@@ -22,6 +22,19 @@ const ChatPage = () => {
   const messages = useSelector((state) => state.messages.messages);
   const filteredMessages = messages.filter((message) => message.channelId === activeChannel.id);
 
+  const onNewChannel = (channel) => {
+    dispatch(setChannels([channel]));
+  };
+  const onRemoveChannel = ({ id }) => {
+    dispatch(removeChannel(id));
+  };
+  const onRenameChannel = (channel) => {
+    dispatch(renameChannel(channel));
+  };
+  const onNewMessage = (message) => {
+    dispatch(setMessages([message]));
+  };
+
   const { data: channelsData, error: getChannelsError } = useGetChannelsQuery(undefined);
   useEffect(() => {
     if (channelsData?.length) {
@@ -29,9 +42,7 @@ const ChatPage = () => {
       return;
     }
 
-    if (!getChannelsError) return;
-
-    if (getChannelsError.isAxiosError) {
+    if (getChannelsError) {
       switch (getChannelsError.response.status) {
         case 401:
           navigate(routes.loginPagePath());
@@ -40,31 +51,28 @@ const ChatPage = () => {
           toast.error(t('errors.networkError'));
           break;
         default:
+          toast.error(t('errors.fetchChannels'));
           break;
       }
     }
-    toast.error(t('errors.fetchChannels'));
+
+    socket.on('newChannel', onNewChannel);
+    socket.on('removeChannel', onRemoveChannel);
+    socket.on('renameChannel', onRenameChannel);
   }, [channelsData, getChannelsError]);
-
-  const fetchNewMessages = async () => {
-    const socket = io();
-
-    socket.on('newMessage', (message) => {
-      dispatch(setMessages([message]));
-    });
-  };
 
   const { data: messagesData, error: getMessagesError } = useGetMessagesQuery(undefined);
   useEffect(() => {
     if (messagesData?.length) {
       dispatch(setMessages(messagesData));
-      fetchNewMessages();
       return;
     }
 
-    if (!getMessagesError) return;
+    if (getMessagesError) {
+      toast.error(t('errors.fetchMessages'));
+    }
 
-    toast.error(t('errors.fetchMessages'));
+    socket.on('newMessage', onNewMessage);
   }, [messagesData, getMessagesError]);
 
   return (

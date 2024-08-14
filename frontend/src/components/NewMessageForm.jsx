@@ -17,10 +17,6 @@ const NewMessageForm = () => {
 
   const [createMessage] = useCreateMessageMutation();
 
-  useEffect(() => {
-    inputRef.current.focus();
-  }, [activeChannel.id]);
-
   const formik = useFormik({
     initialValues: { message: '' },
     validateOnBlur: false,
@@ -36,9 +32,14 @@ const NewMessageForm = () => {
 
       formik.resetForm();
       formik.setSubmitting(false);
-      inputRef.current.focus();
+      // inputRef.current.focus();
     },
   });
+
+  useEffect(() => {
+    inputRef.current.focus();
+  }, [activeChannel.id, formik.isSubmitting]);
+
   const isInvalid = !formik.dirty || !formik.isValid;
 
   return (

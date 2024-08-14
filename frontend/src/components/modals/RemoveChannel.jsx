@@ -3,7 +3,7 @@ import { Modal, Button } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 import { closeModal } from '../../slices/modalSlice.js';
-import { removeChannel, selectChannel } from '../../slices/channelSlice.js';
+import { selectChannel } from '../../slices/channelSlice.js';
 import { useDeleteChannelMutation } from '../../api/channelsApi.js';
 
 const RemoveChannelModal = (props) => {
@@ -21,8 +21,7 @@ const RemoveChannelModal = (props) => {
 
   const handleRemove = async () => {
     try {
-      const { data } = await deleteChannel(modalData.channelId);
-      dispatch(removeChannel(data.id));
+      await deleteChannel(modalData.channelId);
       dispatch(selectChannel(defaultChannel));
       dispatch(closeModal());
       toast.success(t('success.removeChannel'));
